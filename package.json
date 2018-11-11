@@ -1,7 +1,7 @@
 {
 	"name": "tabnine-vscode",
-	"version": "2.1.22",
-	"displayName": "TabNine",
+	"version": "99.1.22",
+	"displayName": "TabNine (fork)",
 	"description": "All-language autocompleter — TabNine uses machine learning to help you write code faster.",
 	"icon": "small_logo.png",
 	"author": "Jacob Jackson",
@@ -30,7 +30,7 @@
 		"tslint": "tslint -c tslint.json src/extension.ts"
 	},
 	"devDependencies": {
-		"@types/node": "^6.0.40",
+		"@types/node": "^6.14.9",
 		"typescript": "^2.1.4",
 		"vscode": "^1.1.21"
 	},
@@ -52,6 +52,11 @@
 						"type": "array",
 						"default": [],
 						"description": "Disable TabNine when the file path contains a match of any of the provided regexes. For example, add \"[.]js$\" to disable TabNine in JavaScript files."
+					},
+					"tabnine.trigger": {
+						"type": "string",
+						"default": "off",
+						"description": "Trigger TabNine on every character, can be 'on', 'off' or comma-separated list of language IDs"
 					}
 				}
 			}

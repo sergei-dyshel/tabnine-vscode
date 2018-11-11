@@ -14,11 +14,47 @@ import {Mutex} from 'await-semaphore';
 
 const CHAR_LIMIT = 100000;
 const MAX_NUM_RESULTS = 5;
-const DEFAULT_DETAIL = "TabNine";
+const DEFAULT_DETAIL = "TabNine (fork)";
 const COMMAND_NAME = "TabNine Substitute";
 
-export function activate(context: vscode.ExtensionContext) {
+let tabNine: TabNine;
+let providerDisposers: vscode.Disposable[] = [];
+let lastTrigger: string;
 
+function getTrigger() {
+  return vscode.workspace.getConfiguration().get<string>('tabnine.trigger', 'off');
+}
+
+function onConfigurationChange(event: vscode.ConfigurationChangeEvent) {
+  if (lastTrigger === getTrigger())
+    return;
+  lastTrigger = getTrigger();
+  vscode.window.showInformationMessage('"tabnine.trigger" changed');
+  registerAllProviders();
+}
+
+async function registerAllProviders()
+{
+  channel.appendLine('Unregistering all');
+  for (const disposer of providerDisposers)
+    disposer.dispose()
+  providerDisposers = []
+  const allLanguages = await vscode.languages.getLanguages();
+  if (lastTrigger === 'off') {
+    providerDisposers.push(await registerProvider(allLanguages, false));
+  } else if (lastTrigger === 'on') {
+    providerDisposers.push(await registerProvider(allLanguages, true));
+  } else {
+    const languages = lastTrigger.split(',').sort().map(lang => lang.trim());
+    providerDisposers.push(await registerProvider(languages, true));
+    providerDisposers.push(await registerProvider(
+        complementLanguages(languages, allLanguages), false));
+  }
+}
+
+let channel: vscode.OutputChannel;
+export function activate(context: vscode.ExtensionContext) {
+  channel = vscode.window.createOutputChannel("tabnine");
   vscode.commands.registerTextEditorCommand(
     COMMAND_NAME,
     (editor, edit, args: CommandArgs) => {
@@ -62,10 +98,22 @@ export function activate(context: vscode.ExtensionContext) {
       })
     }
   );
+  tabNine = new TabNine();
+  lastTrigger = getTrigger();
+  vscode.workspace.onDidChangeConfiguration(onConfigurationChange);
+  registerAllProviders();
+}
 
-  const tabNine = new TabNine();
+function complementLanguages(languages: string[], all: string[]): string[]
+{
+  const allSet = new Set<string>(all);
+  for (const lang of languages)
+    allSet.delete(lang);
+  return Array.from(allSet);
+}
 
-  const triggers = [
+async function registerProvider(languages: string[], trigger: boolean) {
+  const triggers = trigger ? [
     ' ',
     '.',
     '(',
@@ -94,9 +142,11 @@ export function activate(context: vscode.ExtensionContext) {
     '#',
     '@',
     '!',
-  ];
+  ] : [];
 
-  vscode.languages.registerCompletionItemProvider({ pattern: '**' }, {
+  channel.appendLine(
+      'Registering trigger=' + trigger + ' languages=' + languages.join(', '));
+  return vscode.languages.registerCompletionItemProvider(languages, {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
       try {
         const offset = document.offsetAt(position);
