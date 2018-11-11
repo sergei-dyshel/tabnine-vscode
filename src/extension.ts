@@ -19,9 +19,6 @@ export function activate(context: vscode.ExtensionContext) {
   const tabNine = new TabNine();
 
   const triggers = [];
-  for (let i = 32; i <= 126; i++) {
-    triggers.push(String.fromCharCode(i));
-  }
 
   vscode.languages.registerCompletionItemProvider({ pattern: '**' }, {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
@@ -108,7 +105,6 @@ export function activate(context: vscode.ExtensionContext) {
     item.range = new vscode.Range(
       args.position.translate(0, -args.suffix_to_substitute.length),
       args.position.translate(0, args.prefix_to_substitute.length));
-    item.detail = args.detailMessage;
     return item;
   }
 
