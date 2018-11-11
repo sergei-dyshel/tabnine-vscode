@@ -98,10 +98,11 @@ export function activate(context: vscode.ExtensionContext) {
   {
     let prefix = '';
     for (let j = 0; j < args.index; j++) {
-      prefix += '~';
+      prefix += 'a';
     }
     let item = new vscode.CompletionItem(args.text);
-    item.filterText = intersperse(args.suffix_to_substitute, args.index);
+    item.filterText = args.suffix_to_substitute;
+    item.sortText = prefix;
     item.range = new vscode.Range(
       args.position.translate(0, -args.suffix_to_substitute.length),
       args.position.translate(0, args.prefix_to_substitute.length));
