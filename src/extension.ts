@@ -14,13 +14,39 @@ import * as readline from 'readline';
 const CHAR_LIMIT = 100000;
 const MAX_NUM_RESULTS = 3;
 
+let tabNine: TabNine;
+let providerDisposer: vscode.Disposable;
+let lastTrigger: boolean;
+
+function getTrigger() {
+  return vscode.workspace.getConfiguration().get<boolean>('tabnine.trigger');
+}
+
+function onConfigurationChange(event: vscode.ConfigurationChangeEvent) {
+  if (lastTrigger === getTrigger())
+    return;
+  lastTrigger = getTrigger();
+  vscode.window.showInformationMessage('"tabnine.trigger" changed');
+  providerDisposer.dispose();
+  providerDisposer = registerProvider();
+}
+
 export function activate(context: vscode.ExtensionContext) {
+  tabNine = new TabNine();
+  lastTrigger = getTrigger();
+  providerDisposer = registerProvider();
+  vscode.workspace.onDidChangeConfiguration(onConfigurationChange);
+}
 
-  const tabNine = new TabNine();
-
+function registerProvider() {
   const triggers = [];
+  if (lastTrigger) {
+    for (let i = 32; i <= 126; i++) {
+      triggers.push(String.fromCharCode(i));
+    }
+  }
 
-  vscode.languages.registerCompletionItemProvider({ pattern: '**' }, {
+  return vscode.languages.registerCompletionItemProvider({ pattern: '**' }, {
     async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext) {
       try {
         const offset = document.offsetAt(position);
@@ -61,7 +87,7 @@ export function activate(context: vscode.ExtensionContext) {
             detailMessage += msg;
           }
           if (detailMessage === "") {
-            detailMessage = "TabNine";
+            detailMessage = "TabNine (fork)";
           }
           let index = 0;
           for (const r of response.results) {
@@ -106,6 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
     item.range = new vscode.Range(
       args.position.translate(0, -args.suffix_to_substitute.length),
       args.position.translate(0, args.prefix_to_substitute.length));
+    item.detail = args.detailMessage;
     return item;
   }
 

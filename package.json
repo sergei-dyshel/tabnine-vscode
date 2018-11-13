@@ -1,7 +1,7 @@
 {
-	"name": "tabnine-vscode",
-	"version": "99.3.0",
-	"displayName": "TabNine, the all-language autocompleter",
+	"name": "tabnine-vscode-fork",
+	"version": "0.3.0",
+	"displayName": "TabNine, the all-language autocompleter (fork)",
 	"author": "Jacob Jackson",
 	"publisher": "TabNine",
 	"repository": {
@@ -49,6 +49,11 @@
 						"type": "array",
 						"default": [],
 						"description": "Disable TabNine when the file path contains a match of any of the provided regexes. For example, add \"[.]js$\" to disable TabNine in JavaScript files."
+					},
+					"tabnine.trigger": {
+						"type": "boolean",
+						"default": false,
+						"description": "Trigger TabNine on every character"
 					}
 				}
 			}
