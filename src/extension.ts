@@ -236,7 +236,7 @@ async function registerProvider(languages: string[], trigger: boolean) {
   {
     let item = new vscode.CompletionItem(args.entry.new_prefix);
     item.insertText = "";
-    item.sortText = new Array(args.index + 2).join('0');
+    item.sortText = new Array(args.index + 2).join('z');
     item.range = new vscode.Range(args.position, args.position);
     let arg: CommandArgs = {
       old_prefix: '',
@@ -263,7 +263,7 @@ async function registerProvider(languages: string[], trigger: boolean) {
     } else {
       item.detail = args.detailMessage;
     }
-    item.preselect = (args.index === 0);
+    item.preselect = false;
     item.kind = args.entry.kind;
     return item;
   }
