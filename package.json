@@ -60,8 +60,7 @@
 						"default": "inline",
 						"description": "Position of TabNine completions in the completion list",
 						"enum": ["top", "bottom", "inline"],
-						"scope": "resource",
-						""
+						"scope": "resource"
 					},
 					"tabnine.enabled": {
 						"type": "boolean",
