@@ -53,6 +53,14 @@
 						"default": [],
 						"description": "Disable TabNine when the file path contains a match of any of the provided regexes. For example, add \"[.]js$\" to disable TabNine in JavaScript files."
 					},
+					"tabnine.positionInList": {
+						"type": "string",
+						"default": "inline",
+						"description": "Position of TabNine completions in the completion list",
+						"enum": ["top", "bottom", "inline"],
+						"scope": "resource",
+						""
+					},
 					"tabnine.enabled": {
 						"type": "boolean",
 						"default": true,

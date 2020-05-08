@@ -190,8 +190,10 @@ async function registerProvider(languages: string[], trigger: boolean) {
             limit = 1;
           }
           let index = 0;
+          const configuration = vscode.workspace.getConfiguration(undefined, document.uri);
           for (const entry of response.results) {
             results.push(makeCompletionItem({
+              configuration,
               document,
               index,
               position,
@@ -225,6 +227,7 @@ async function registerProvider(languages: string[], trigger: boolean) {
   }
 
   function makeCompletionItem(args: {
+    configuration: vscode.WorkspaceConfiguration,
     document: vscode.TextDocument,
     index: number,
     position: vscode.Position,
@@ -236,7 +239,13 @@ async function registerProvider(languages: string[], trigger: boolean) {
   {
     let item = new vscode.CompletionItem(args.entry.new_prefix);
     item.insertText = "";
-    item.sortText = new Array(args.index + 2).join('z');
+    let sortChar: string = 'a';
+    const positionInList: 'top'|'bottom'|'inline' = args.configuration.get('tabnine.positionInList');
+    if (positionInList === 'top')
+      sortChar = '0';
+    else if (positionInList === 'bottom')
+      sortChar = 'z';
+    item.sortText = new Array(args.index + 2).join(sortChar);
     item.range = new vscode.Range(args.position, args.position);
     let arg: CommandArgs = {
       old_prefix: '',
