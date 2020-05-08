@@ -1,3 +1,12 @@
+Fork tweaks:
+- Completion triggered only after alpha-numeric and symbols such as `.` or `->`.
+  This allows using TabNine with with other language completers.
+- Some configuration options to enable/disable TabNine per-language or per-project.
+- Configurable positioning TabNine candidates in the beginning/end of
+  completion list (requires corresponding patch from my [VSCode fork](https://github.com/sergei-dyshel/vscode) to work).
+
+---
+
 This is the VS Code client for [TabNine](https://tabnine.com), the all-language autocompleter.
 
 - Indexes your whole project, reading your .gitignore to determine which files to index.
