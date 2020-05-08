@@ -273,7 +273,7 @@ async function registerProvider(languages: string[], trigger: boolean) {
       item.detail = args.detailMessage;
     }
     item.preselect = false;
-    item.kind = args.entry.kind;
+    item.kind = undefined;
     return item;
   }
 
