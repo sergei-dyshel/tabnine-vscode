@@ -53,6 +53,12 @@
 						"default": [],
 						"description": "Disable TabNine when the file path contains a match of any of the provided regexes. For example, add \"[.]js$\" to disable TabNine in JavaScript files."
 					},
+					"tabnine.enabled": {
+						"type": "boolean",
+						"default": true,
+						"description": "Whether TabNine is enabled",
+						"scope": "resource"
+					},
 					"tabnine.trigger": {
 						"type": "string",
 						"default": "off",

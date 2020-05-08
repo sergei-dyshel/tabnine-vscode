@@ -285,7 +285,9 @@ async function registerProvider(languages: string[], trigger: boolean) {
   }
 
   function completionIsAllowed(document: vscode.TextDocument, position: vscode.Position): boolean {
-    const configuration = vscode.workspace.getConfiguration();
+    const configuration = vscode.workspace.getConfiguration(undefined, document.uri);
+    if (!configuration.get<boolean>('tabnine.enabled'))
+      return;
     let disable_line_regex = configuration.get<string[]>('tabnine.disable_line_regex');
     if (disable_line_regex === undefined) {
       disable_line_regex = [];
