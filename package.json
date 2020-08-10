@@ -1,7 +1,7 @@
 {
 	"name": "tabnine-vscode",
-	"version": "2.9.1",
-	"displayName": "TabNine",
+	"version": "99.9.1",
+	"displayName": "TabNine (fork)",
 	"description": "All-language autocompleter — TabNine uses machine learning to help you write code faster.",
 	"icon": "small_logo.png",
 	"author": "Jacob Jackson",
@@ -33,8 +33,8 @@
 	],
 	"main": "./out/extension",
 	"scripts": {
-		"vscode:prepublish": "tsc -p ./",
-		"compile": "tsc -watch -p ./",
+		"vscode:prepublish": "npx tsc -p ./",
+		"compile": "npx tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"tslint": "tslint -c tslint.json src/extension.ts",
 		"vscode:uninstall": "node ./out/uninstall"
@@ -42,7 +42,7 @@
 	"devDependencies": {
 		"@types/node": "^8.1.0",
 		"typescript": "^3.9.3",
-		"vscode": "^1.1.21"
+		"vscode": "^1.1.37"
 	},
 	"dependencies": {
 		"await-semaphore": "^0.1.3",
@@ -63,7 +63,8 @@
 					"tabnine.disable_line_regex": {
 						"type": "array",
 						"default": [],
-						"description": "Disable TabNine when the current line contains a match of any of the provided regexes. For example, add \"require\" to disable TabNine when the current line contains the word 'require'."
+						"description": "Disable TabNine when the current line contains a match of any of the provided regexes. For example, add \"require\" to disable TabNine when the current line contains the word 'require'.",
+						"scope": "resource"
 					},
 					"tabnine.disable_file_regex": {
 						"type": "array",
@@ -82,6 +83,28 @@
 					"tabnine.logFilePath": {
 						"type": "string",
 						"description": "TabNine's log file (Visual Studio Code must be restarted for this setting to take effect)"
+					},
+					"tabnine.positionInList": {
+						"type": "string",
+						"default": "inline",
+						"description": "Position of TabNine completions in the completion list",
+						"enum": [
+							"top",
+							"bottom",
+							"inline"
+						],
+						"scope": "resource"
+					},
+					"tabnine.enabled": {
+						"type": "boolean",
+						"default": true,
+						"description": "Whether TabNine is enabled",
+						"scope": "resource"
+					},
+					"tabnine.trigger": {
+						"type": "string",
+						"default": "off",
+						"description": "Trigger TabNine on every character, can be 'on', 'off' or comma-separated list of language IDs"
 					}
 				}
 			}
