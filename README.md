@@ -12,6 +12,16 @@
 [![Youtube Demo Video][youtube-shield]][youtube-url]
 [![Twitter Follow][twitter-shield]][twitter-url]
 
+# Fork tweaks
+
+- Completion triggered only after alpha-numeric and symbols such as `.` or `->`.
+  This allows using TabNine with with other language completers.
+- Configuration options to enable/disable TabNine per-language or per-project.
+- Configurable positioning TabNine candidates in the beginning/end of
+  completion list (requires corresponding patch from my [VSCode fork](https://github.com/sergei-dyshel/vscode) to work).
+
+# Original README
+
 Tabnine is a powerful Artificial Intelligence assistant designed to help you code faster, reduce mistakes, and discover best coding practices - without ever leaving the comfort of VSCode.
 ​
 
