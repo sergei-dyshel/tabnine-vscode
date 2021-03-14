@@ -1,7 +1,7 @@
 {
   "publisher": "TabNine",
   "name": "tabnine-vscode",
-  "version": "3.2.8",
+  "version": "99.3.2.8",
   "displayName": "Tabnine Autocomplete AI: JavaScript, Python, TypeScript, PHP, Go, Java, Ruby, C/C++, HTML/CSS, C#, Rust, SQL, Bash, Kotlin, React",
   "description": "👩‍💻🤖 JavaScript, Python, Java, Typescript & all other languages - AI Code completion plugin. Tabnine makes developers more productive by auto-completing their code.",
   "icon": "small_logo.png",
@@ -431,7 +431,29 @@
           "tabnine.logFilePath": {
             "type": "string",
             "description": "Tabnine's log file (Visual Studio Code must be restarted for this setting to take effect)"
-          }
+          },
+					"tabnine.positionInList": {
+						"type": "string",
+						"default": "inline",
+						"description": "Position of TabNine completions in the completion list",
+						"enum": [
+							"top",
+							"bottom",
+							"inline"
+						],
+						"scope": "resource"
+					},
+					"tabnine.enabled": {
+						"type": "boolean",
+						"default": true,
+						"description": "Whether TabNine is enabled",
+						"scope": "resource"
+					},
+					"tabnine.trigger": {
+						"type": "string",
+						"default": "off",
+						"description": "Trigger TabNine on every character, can be 'on', 'off' or comma-separated list of language IDs"
+					}
         }
       }
     ]
