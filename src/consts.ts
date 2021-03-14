@@ -4,7 +4,7 @@ import { ColorThemeKind, ExtensionContext, Uri, window } from "vscode";
 export const API_VERSION = "3.2.71";
 export const BINARY_ROOT_PATH = path.join(__dirname, "..", "binaries");
 export const ATTRIBUTION_BRAND = "⌬ ";
-export const BRAND_NAME = "tabnine";
+export const BRAND_NAME = "tabnine (fork)";
 export const LIMITATION_SYMBOL = "🔒";
 export const FULL_BRAND_REPRESENTATION = ATTRIBUTION_BRAND + BRAND_NAME;
 
