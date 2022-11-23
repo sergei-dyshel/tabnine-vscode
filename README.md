@@ -12,6 +12,15 @@
 [![Youtube Demo Video][youtube-shield]][youtube-url]
 [![Twitter Follow][twitter-shield]][twitter-url]
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/from-referrer/)
+
+# Fork tweaks
+
+- Completion triggered only after alpha-numeric and symbols such as `.` or `->`.
+  This allows using TabNine with with other language completers.
+- Configuration options to enable/disable TabNine per-language or per-project.
+- Configurable positioning TabNine candidates in the beginning/end of
+  completion list (requires corresponding patch from my [VSCode fork](https://github.com/sergei-dyshel/vscode) to work).
+
 # AI assistant for software developers
 ## Code faster with AI code completions
 

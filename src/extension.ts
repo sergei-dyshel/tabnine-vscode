@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import * as vscode from "vscode";
 import handlePreReleaseChannels from "./preRelease/installer";
 import pollDownloadProgress from "./binary/pollDownloadProgress";

@@ -1,6 +1,6 @@
 {
-  "publisher": "TabNine",
-  "name": "tabnine-vscode",
+  "publisher": "TabNine-fork",
+  "name": "tabnine-vscode-fork",
   "version": "3.6.67",
   "displayName": "Tabnine AI Autocomplete for Javascript, Python, Typescript, PHP, Go, Java, Ruby & more",
   "description": "JavaScript, Python, Java, Typescript & all other languages - AI Code completion plugin. Tabnine makes developers more productive by auto-completing their code.",
@@ -383,6 +383,38 @@
             "default": null,
             "description": "The tabnine cloud host to connect to (restart to take effect)",
             "when": "tabnine.enterprise"
+          },
+          "tabnine.positionInList": {
+            "type": "string",
+            "default": "inline",
+            "description": "Position of TabNine completions in the completion list",
+            "enum": [
+              "top",
+              "bottom",
+              "inline"
+            ],
+            "scope": "resource"
+          },
+          "tabnine.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether TabNine is enabled",
+            "scope": "language-overridable"
+          },
+          "tabnine.trigger": {
+            "default": false,
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Trigger TabNine on every character. Can be list of language IDs."
           }
         }
       }

@@ -112,6 +112,7 @@ export function getContext(contextGetMocks: ContextGetMocks): ExtensionContext {
     globalState: {
       get: (key: string) => contextGetMocks[key],
       update: updateGlobalState,
+      keys: () => Object.keys(contextGetMocks),
     },
   };
 }

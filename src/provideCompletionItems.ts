@@ -50,8 +50,10 @@ async function completionsListFor(
         ? 1
         : response.results.length;
 
+    const config = vscode.workspace.getConfiguration(undefined, document.uri);
     return response.results.slice(0, limit).map((entry, index) =>
       makeCompletionItem({
+        config,
         document,
         index,
         position,
@@ -74,6 +76,7 @@ function extractDetailMessage(response: AutocompleteResult) {
 }
 
 function makeCompletionItem(args: {
+  config: vscode.WorkspaceConfiguration,
   document: vscode.TextDocument;
   index: number;
   position: vscode.Position;
@@ -91,14 +94,19 @@ function makeCompletionItem(args: {
   } else {
     item.detail = BRAND_NAME;
   }
-
-  item.sortText = String.fromCharCode(0) + String.fromCharCode(args.index);
+  let sortChar = 'a';
+  const positionInList: 'top'|'bottom'|'inline' = args.config.get('tabnine.positionInList') ?? 'bottom';
+  if (positionInList === 'top')
+    sortChar = '0';
+  else if (positionInList === 'bottom')
+    sortChar = 'z';
+  item.sortText = sortChar + String.fromCharCode(args.index);
   item.insertText = new vscode.SnippetString(
     escapeTabStopSign(args.entry.new_prefix)
   );
 
   item.filterText = args.entry.new_prefix;
-  item.preselect = args.index === 0;
+  item.preselect = false;
   item.kind = args.entry.completion_metadata?.kind;
   item.range = new vscode.Range(
     args.position.translate(0, -args.oldPrefix.length),
@@ -158,7 +166,10 @@ export function completionIsAllowed(
   document: vscode.TextDocument,
   position: vscode.Position
 ): boolean {
-  const configuration = vscode.workspace.getConfiguration();
+  const configuration = vscode.workspace.getConfiguration(
+      undefined, {uri: document.uri, languageId: document.languageId});
+  if (!configuration.get<boolean>('tabnine.enabled')) return false;
+
   const disableLineRegex = getMisnamedConfigPropertyValue(
     "tabnine.disableLineRegex",
     "tabnine.disable_line_regex",

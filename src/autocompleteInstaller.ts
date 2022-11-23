@@ -1,4 +1,4 @@
-import { languages, Disposable, ExtensionContext } from "vscode";
+import { languages, Disposable, ExtensionContext, workspace } from "vscode";
 import getSuggestionMode, {
   SuggestionsMode,
 } from "./capabilities/getSuggestionMode";
@@ -42,6 +42,17 @@ export default async function installAutocomplete(
   );
 }
 
+function registerCompletionProvider(trigger: boolean, languageIds?: string[]) {
+  const triggers = trigger ? COMPLETION_TRIGGERS : [];
+  const selector = languageIds ?? { pattern: "**" };
+
+  return languages.registerCompletionItemProvider(
+      selector, {
+        provideCompletionItems,
+      },
+      ...triggers);
+}
+
 async function reinstallAutocomplete({
   inlineEnabled,
   snippetsEnabled,
@@ -57,15 +68,13 @@ async function reinstallAutocomplete({
   }
 
   if (autocompleteEnabled) {
+    const trigger = workspace.getConfiguration().get<boolean | string[]>('tabnine.trigger', false);
     subscriptions.push(
-      languages.registerCompletionItemProvider(
-        { pattern: "**" },
-        {
-          provideCompletionItems,
-        },
-        ...COMPLETION_TRIGGERS
-      )
+      registerCompletionProvider(trigger === true),
     );
+    if (typeof trigger === 'object') {
+      registerCompletionProvider(true /* trigger */, trigger);
+    }
   }
 }
 

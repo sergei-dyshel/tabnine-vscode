@@ -62,6 +62,8 @@ export default class TabnineAuthenticationProvider
 
     this.myOnDidChangeSessions.fire({
       removed: [(await this.getSessions())[0]],
+      added: undefined,
+      changed: undefined,
     });
     await sleep(5000);
   }
@@ -124,6 +126,7 @@ export default class TabnineAuthenticationProvider
     this.myOnDidChangeSessions.fire({
       added,
       removed,
+      changed: undefined,
     });
   }
 }
